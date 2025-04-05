@@ -1,0 +1,14 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: homelab-nw-policy-allow-egress
+  namespace: homelab
+spec:
+  podSelector:
+    matchLabels:
+      role: egress-allow
+  policyTypes:
+  - Egress
+  egress:
+  - {}
+
