@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otterwiki
+  namespace: homelab
+  labels:
+    name: otterwiki
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: otterwiki
+  template:
+    metadata:
+      labels:
+        name: otterwiki
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: otterwiki # https://github.com/redimp/otterwiki
+          image: "redimp/otterwiki:2.10.4" # 
+          env: []
+          resources:
+            limits:
+              memory: "200Mi"
+              cpu: "500m" # 500m is 1/2 a core?
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app-data
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+            # runAsUser: 1000
+            # runAsGroup: 1000
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: otterwiki-local-data-pvc

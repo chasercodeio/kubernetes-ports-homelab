@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: otterwiki-svc
+  namespace: homelab
+  labels:
+    name: otterwiki-svc
+  annotations:
+    name: otterwiki-svc
+spec:
+  type: ClusterIP # if you want to be able to use localhost:<port> use "NodePort" here.
+  ports:
+    - port: 80
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000 # If using nodeport, the port number cannot be below 30000 and above some number i forgot
+  selector:
+    name: otterwiki

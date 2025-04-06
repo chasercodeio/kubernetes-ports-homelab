@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: otterwiki-local-data-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: otterwiki-storage
+  volumeName: otterwiki-local-data-pv
+  resources:
+    requests:
+      storage: 20Gi
