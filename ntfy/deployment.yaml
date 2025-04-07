@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntfy
+  namespace: homelab
+  labels:
+    name: ntfy
+    # If you are hosting this outside or need that connectivity, u may need to add the role
+    # role: egress-allow
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: ntfy
+  template:
+    metadata:
+      labels:
+        name: ntfy
+        # If you are hosting this outside or need that connectivity, u may need to add the role
+        # role: egress-allow
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: ntfy # https://github.com/binwiederhier/ntfy
+          image: "binwiederhier/ntfy:v1.28.0" # 
+          env:
+            - name: TZ
+              valueFrom:
+                configMapKeyRef:
+                  name: ntfy-configmap
+                  key: TZ
+            - name: NTFY_LOG_LEVEL # adjust log level
+              valueFrom:
+                configMapKeyRef:
+                  name: ntfy-configmap
+                  key: NTFY_LOG_LEVEL
+            - name: NTFY_BASE_URL # add base url
+              valueFrom:
+                configMapKeyRef:
+                  name: ntfy-configmap
+                  key: NTFY_BASE_URL
+          command: ["/bin/sh"]
+          args: ["-c", "ntfy serve"]
+          resources:
+            limits:
+              memory: "200Mi"
+              cpu: "250m"
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            allowPrivilegeEscalation: false
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/ntfy
+              name: data
+            - mountPath: /var/cache/ntfy
+              name: cache
+      volumes:
+        - name: data
+          configMap:
+            name: ntfy-configmap
+            items:
+              - key: server.yml
+                path: server.yml
+        - name: cache
+          persistentVolumeClaim:
+            claimName: ntfy-local-cache-pvc

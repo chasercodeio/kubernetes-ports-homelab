@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: ntfy-local-cache-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: ntfy-local-storage
+  volumeName: ntfy-local-cache-pv
+  resources:
+    requests:
+      storage: 1Gi

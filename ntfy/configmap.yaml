@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ntfy-configmap
+data:
+  # ENV VARIABLES
+  TZ: "AWST"
+  NTFY_LOG_LEVEL: "INFO"
+  NTFY_BASE_URL: "http://0.0.0.0"
+
+  # Server File
+  server.yml: |
+    # Template: https://github.com/binwiederhier/ntfy/blob/main/server/server.yml
+    base-url: http://0.0.0.0

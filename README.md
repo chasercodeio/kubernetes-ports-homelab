@@ -84,3 +84,4 @@ kubectl apply -f homelab-nw-ex-policy.yaml
 1. [Otterwiki](./otterwiki/README.md)
 2. [HomePage](./homepage/README.md)
 3. [Glance](./glance/)
+4. [Ntfy](./ntfy/)
