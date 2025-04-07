@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: glance-svc
+  namespace: homelab
+  labels:
+    name: glance-svc
+  annotations:
+    name: glance-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: glance

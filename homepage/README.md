@@ -15,6 +15,8 @@
 
 Choose between using the configmap or using a persistent volume / persistent volume claim for config data
 
+TODO: Add egress-allow role to allow homepage to connect to external services not in localhost
+
 ### For configmap:
 
 1. Edit kustomization.yaml to look like the following:

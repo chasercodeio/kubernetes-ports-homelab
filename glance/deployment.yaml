@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: glance
+  namespace: homelab
+  labels:
+    name: glance
+    role: egress-allow
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: glance
+  template:
+    metadata:
+      labels:
+        name: glance
+        role: egress-allow
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: glance # https://github.com/glanceapp/glance
+          image: "glanceapp/glance" # 
+          env: []
+          resources:
+            limits:
+              memory: "200Mi"
+              cpu: "500m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config/
+              name: config
+            # - mountPath: /app/config/glance.yml
+            #   name: config
+            - mountPath: /app/assets/
+              name: asset
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: config
+          configMap:
+            name: glance-default
+            # Make sure to update this area whenever you add an extra file to the configmap
+            items:
+              - key: home.yml
+                path: home.yml
+              - key: glance.yml
+                path: glance.yml
+        - name: asset
+          emptyDir: {}
+          # configMap:
+          #   name: glance-default
+            # items:
