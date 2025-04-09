@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: outline-svc
+  namespace: homelab
+  labels:
+    name: outline-svc
+  annotations:
+    name: outline-svc
+spec:
+  type: NodePort
+  ports:
+    - port: 3000
+      name: http
+      targetPort: 3000
+      protocol: TCP
+      nodePort: 30010
+  selector:
+    name: outline
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outline-redis-svc
+  namespace: homelab
+  labels:
+    name: outline-redis-svc
+  annotations:
+    name: outline-redis-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6379
+      name: http
+      targetPort: 6379
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: outline-redis
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: outline-postgres-svc
+  namespace: homelab
+  labels:
+    name: outline-postgres-svc
+  annotations:
+    name: outline-postgres-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      name: http
+      targetPort: 5432
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: outline-postgres

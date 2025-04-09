@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: outline-local-config-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 20Gi # Technically useless: https://stackoverflow.com/questions/49561968/what-is-the-purpose-of-the-capacity-parameter-on-a-persistent-volume-that-is-in
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: outline-storage # must have a storageclass called otterwiki, otherwise will default to local-path "kubectl get storageclass -A" to find it
+  local:
+    path: /your/path/goes/here
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node # run "kubectl get nodes" to get all nodes in your cluster (mine has one)
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: outline-postgres-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 20Gi # Technically useless: https://stackoverflow.com/questions/49561968/what-is-the-purpose-of-the-capacity-parameter-on-a-persistent-volume-that-is-in
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: outline-postgres-storage # must have a storageclass called otterwiki, otherwise will default to local-path "kubectl get storageclass -A" to find it
+  local:
+    path: /your/path/goes/here
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node # run "kubectl get nodes" to get all nodes in your cluster (mine has one)
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: outline-redis-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 20Gi # Technically useless: https://stackoverflow.com/questions/49561968/what-is-the-purpose-of-the-capacity-parameter-on-a-persistent-volume-that-is-in
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: outline-redis-storage # must have a storageclass called otterwiki, otherwise will default to local-path "kubectl get storageclass -A" to find it
+  local:
+    path: /your/path/goes/here
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node # run "kubectl get nodes" to get all nodes in your cluster (mine has one)

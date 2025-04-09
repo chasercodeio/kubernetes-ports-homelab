@@ -10,6 +10,7 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: keycloak-local-storage
+  volumeName: keycloak-db-pv
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -23,3 +24,4 @@ spec:
     requests:
       storage: 5Gi
   storageClassName: keycloak-postgres-local-storage
+  volumeName: keycloak-postgres-db-pv

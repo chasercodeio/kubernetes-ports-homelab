@@ -7,6 +7,7 @@ spec:
   accessModes:
     - ReadWriteOnce
   storageClassName: homepage-local-storage
+  volumeName: homepage-local-storage
   resources:
     requests:
       storage: 2Gi

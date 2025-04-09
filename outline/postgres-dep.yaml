@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: outline-postgres
+  namespace: homelab
+  labels:
+    name: outline-postgres
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: outline-postgres
+  template:
+    metadata:
+      labels:
+        name: outline-postgres
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: outline-postgres
+          image: "postgres"
+          envFrom:
+          - configMapRef:
+              name: outline-configmap
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          command: []
+          ports:
+            - name: http
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+            # runAsUser: 1000
+            # runAsGroup: 1000
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: outline-postgres-pvc
