@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: keycloak-configmap
+  namespace: homelab
+data:
+  # All Config options: https://www.keycloak.org/server/all-config
+  KEYCLOAK_ADMIN: "admin"
+  KEYCLOAK_ADMIN_PASSWORD: "admin"
+  KC_PROXY_HEADERS: "xforwarded"
+  KC_HTTP_ENABLED: "true"
+  KC_HTTP_HOST: "0.0.0.0" # default
+  KC_HTTP_PORT: "8080" # default
+  KC_HTTP_RELATIVE_PATH: "/"
+  KC_CACHE: "ispn" # "ispn" or "cache"
+  KC_CACHE_EMBEDDED_MTLS_ENABLED: "false" # "true" or "false"
+  KC_CACHE_REMOTE_PORT: "11222" # default cache port
+  KC_CACHE_REMOTE_TLS_ENABLED: "true"
+  KC_CACHE_STACK: "jdbc-ping"
+  # KC_CONFIG_KEYSTORE_TYPE: "PKCS12"
+  KC_DB: "postgres" # default for dev is "dev-file"
+  KC_DB_USERNAME: "keycloak"
+  KC_DB_PASSWORD: "test123" # Password for DB
+  KC_DB_POOL_MAX_SIZE: "100" # default
+  KC_DB_URL: "jdbc:postgresql://keycloak-postgres-svc:5432/keycloak"
+  KC_TRANSACTION_XA_ENABLED: "false" # default
+
+  # HTTPS
+  # KC_HTTPS_CERTIFICATE_FILE: "" # The file path to a server certificate or certificate chain in PEM format.
+  # KC_HTTPS_CERTIFICATE_KEY_FILE: "" # The file path to a private key in PEM format
+  # KC_HTTPS_CERTIFICATES_RELOAD_PERIOD: "1h"
+  # KC_HTTPS_CLIENT_AUTH: "none" # "none", "request", "required"
+  # KC_HTTPS_KEY_STORE_FILE: "" 
+  # KC_HTTPS_KEY_STORE_PASSWORD: ""
+  # KC_HTTPS_PORT: "8443" # default
+  # KC_HTTPS_TRUST_STORE_FILE: ""
+  # KC_HTTPS_TRUST_STORE_PASSWORD: ""
+
+  # HEALTH
+  KC_HEALTH_ENABLED: "true"
+
+  # LOGGING
+  KC_LOG: "console,file"
+  KC_LOG_CONSOLE_COLOR: "true"
+  KC_LOG_CONSOLE_INCLUDE_TRACE: "true"
+  KC_LOG_CONSOLE_LEVEL: "all"
+  KC_LOG_CONSOLE_OUTPUT: "default" # default or json
+  KC_LOG_FILE: "data/log/keycloak.log"
+  # KC_LOG_FILE_FORMAT: "[%c] (%t) %s%e%n"
+  KC_LOG_FILE_LEVEL: "all"
+  KC_LOG_FILE_OUTPUT: "default" # default or json
+
+  # METRICS VARS
+  KC_METRICS_ENABLED: "false" # default 
+  KC_HTTP_METRICS_HISTOGRAMS_ENABLED: "true"
+  KC_EVENT_METRICS_USER_ENABLED: "true"
+  KC_CACHE_METRICS_HISTOGRAMS_ENABLED: "false" # "true" or "false"
+
+  # IMPORT AND EXPORT (CHECK DOCUMENTATION)

@@ -83,5 +83,6 @@ kubectl apply -f homelab-nw-ex-policy.yaml
 ## Working Services
 1. [Otterwiki](./otterwiki/README.md)
 2. [HomePage](./homepage/README.md)
-3. [Glance](./glance/)
-4. [Ntfy](./ntfy/)
+3. [Glance](./glance/README.md)
+4. [Ntfy](./ntfy/README.md)
+5. [Keycloak](./keycloak/README.md)
