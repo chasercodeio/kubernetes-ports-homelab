@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-configmap
+  namespace: homelab
+  labels:
+    app.kubernetes.io/name: grafana-configmap
+data:
+  grafana.ini: |
+    [log]
+    ; # Either "debug", "info", "warn", "error", "critical", default is "info"
+    ; # we change from info to debug level
+    level = debug
