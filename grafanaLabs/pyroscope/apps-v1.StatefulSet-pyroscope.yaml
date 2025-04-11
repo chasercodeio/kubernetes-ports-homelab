@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app.kubernetes.io/component: all
+    app.kubernetes.io/instance: pyroscope
+    app.kubernetes.io/managed-by: Helmraiser
+    app.kubernetes.io/name: pyroscope
+    app.kubernetes.io/version: 1.13.1
+    helm.sh/chart: pyroscope-1.13.1
+  name: pyroscope
+  namespace: homelab
+spec:
+  podManagementPolicy: Parallel
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: all
+      app.kubernetes.io/instance: pyroscope
+      app.kubernetes.io/name: pyroscope
+  serviceName: pyroscope-headless
+  template:
+    metadata:
+      annotations:
+        checksum/config: c0479fc47dc5e5d924e80f0e297214ea649104b2fcd218267cb194bc2cc83416
+        profiles.grafana.com/cpu.port_name: http2
+        profiles.grafana.com/cpu.scrape: "true"
+        profiles.grafana.com/goroutine.port_name: http2
+        profiles.grafana.com/goroutine.scrape: "true"
+        profiles.grafana.com/memory.port_name: http2
+        profiles.grafana.com/memory.scrape: "true"
+      labels:
+        app.kubernetes.io/component: all
+        app.kubernetes.io/instance: pyroscope
+        app.kubernetes.io/name: pyroscope
+        name: pyroscope
+    spec:
+      containers:
+      - args:
+        - -target=all
+        - -self-profiling.disable-push=true
+        - -server.http-listen-port=4040
+        - -memberlist.cluster-label=homelab-pyroscope
+        - -memberlist.join=dns+pyroscope-memberlist.homelab.svc.cluster.local.:7946
+        - -config.file=/etc/pyroscope/config.yaml
+        - -runtime-config.file=/etc/pyroscope/overrides/overrides.yaml
+        - -log.level=debug
+        env:
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: NAMESPACE_FQDN
+          value: homelab.svc.cluster.local.
+        image: grafana/pyroscope:1.13.1
+        imagePullPolicy: IfNotPresent
+        name: pyroscope
+        ports:
+        - containerPort: 4040
+          name: http2
+          protocol: TCP
+        - containerPort: 7946
+          name: memberlist
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: http2
+            scheme: HTTP
+        resources: {}
+        securityContext: {}
+        volumeMounts:
+        - mountPath: /etc/pyroscope/config.yaml
+          name: config
+          subPath: config.yaml
+        - mountPath: /etc/pyroscope/overrides/
+          name: overrides-config
+        - mountPath: /data
+          name: data
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 10001
+        runAsNonRoot: true
+        runAsUser: 10001
+      serviceAccountName: pyroscope
+      volumes:
+      - configMap:
+          name: pyroscope-config
+        name: config
+      - configMap:
+          name: pyroscope-overrides-config
+        name: overrides-config
+      - emptyDir: {}
+        name: data

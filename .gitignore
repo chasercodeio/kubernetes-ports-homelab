@@ -3,3 +3,4 @@
 */config
 */home
 *.db
+*build

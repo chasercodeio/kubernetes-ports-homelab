@@ -1,0 +1,19 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  labels:
+    app.kubernetes.io/component: all
+    app.kubernetes.io/instance: pyroscope
+    app.kubernetes.io/managed-by: Helmraiser
+    app.kubernetes.io/name: pyroscope
+    app.kubernetes.io/version: 1.13.1
+    helm.sh/chart: pyroscope-1.13.1
+  name: pyroscope
+  namespace: homelab
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: all
+      app.kubernetes.io/instance: pyroscope
+      app.kubernetes.io/name: pyroscope

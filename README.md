@@ -2,6 +2,18 @@
 
 > Please keep in mind that I am still learning Kubernetes and the resources it has. For each of these, please make sure to DYOR and enforce the actions you want in your own environment.
 
+## Working Services
+1. [Otterwiki](./otterwiki/README.md)
+2. [HomePage](./homepage/README.md)
+3. [Glance](./glance/README.md)
+4. [Ntfy](./ntfy/README.md)
+5. [Keycloak](./keycloak/README.md)
+6. [Outline Wiki](./outline/)
+7. [GrafanaLabs Grafana](./grafanaLabs/README.md)
+8. [GrafanaLabs Pyroscope UI](./grafanaLabs/README.md)
+9. [GrafanaLabs Alloy](./grafanaLabs/README.md)
+
+
 ## Pre-Service configuration
 
 Before applying each service, a few files need to be applied (These are all found in the [pre-config]() folder.
@@ -80,10 +92,7 @@ kubectl apply -f homelab-nw-policy.yaml
 kubectl apply -f homelab-nw-ex-policy.yaml
 ```
 
-## Working Services
-1. [Otterwiki](./otterwiki/README.md)
-2. [HomePage](./homepage/README.md)
-3. [Glance](./glance/README.md)
-4. [Ntfy](./ntfy/README.md)
-5. [Keycloak](./keycloak/README.md)
-6. [Outline Wiki](./outline/)
+## TODO:
+- VictoriaMetrics
+- VictoriaLogs
+- HEAPS more ...

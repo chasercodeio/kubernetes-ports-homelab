@@ -1,0 +1,20 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    app.kubernetes.io/component: rbac
+    app.kubernetes.io/instance: pyroscope
+    app.kubernetes.io/managed-by: Helmraiser
+    app.kubernetes.io/name: alloy
+    app.kubernetes.io/part-of: alloy
+    app.kubernetes.io/version: v1.1.1
+    helm.sh/chart: alloy-0.3.2
+  name: pyroscope-alloy
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: pyroscope-alloy
+subjects:
+- kind: ServiceAccount
+  name: pyroscope-alloy
+  namespace: homelab
