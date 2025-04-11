@@ -1,0 +1,47 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mealie-postgres-local-data-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: mealie-postgres-local-storage
+  local:
+    path: /your/path/
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mealie-local-data-pv
+  namespace: homelab
+spec:
+  capacity:
+    storage: 2Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: mealie-local-storage
+  local:
+    path: /your/path
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - node

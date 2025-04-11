@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mealie
+  namespace: homelab
+  labels:
+    name: mealie
+    role: egress-allow
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: mealie
+  template:
+    metadata:
+      labels:
+        name: mealie
+        role: egress-allow
+    spec:
+      securityContext:
+        # runAsUser: 1000
+        # runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: mealie # https://docs.mealie.io/documentation/getting-started/installation/postgres/
+          image: "ghcr.io/mealie-recipes/mealie:v2.8.0" # 
+          env:
+            - name: ALLOW_SIGNUP
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: GUID
+              value: "1000"
+            - name: TZ
+              value: "Perth/Australia"
+            - name: BASE_URL
+              value: "http://0.0.0.0:9000"
+            - name: DB_ENGINE
+              value: postgres
+            - name: POSTGRES_USER
+              value: mealie
+            - name: POSTGRES_PASSWORD
+              value: mealie
+            - name: POSTGRES_SERVER
+              value: mealie-postgres-svc
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_DB
+              value: mealie
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: mealie-local-data-pvc

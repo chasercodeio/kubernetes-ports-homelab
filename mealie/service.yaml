@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mealie-svc
+  namespace: homelab
+  labels:
+    name: mealie-svc
+  annotations:
+    name: mealie-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9000
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: mealie
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mealie-postgres-svc
+  namespace: homelab
+  labels:
+    name: mealie-postgres-svc
+  annotations:
+    name: mealie-postgres-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: mealie-postgres

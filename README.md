@@ -12,6 +12,7 @@
 7. [GrafanaLabs Grafana](./grafanaLabs/README.md)
 8. [GrafanaLabs Pyroscope UI](./grafanaLabs/README.md)
 9. [GrafanaLabs Alloy](./grafanaLabs/README.md)
+10. [Mealie](./mealie/)
 
 
 ## Pre-Service configuration
