@@ -1,0 +1,83 @@
+#!/bin/bash
+
+set -e
+
+# By Chaki Ramesh.
+#
+# Inspiration:  Most to all articles that discuss importing images from dockerfiles
+#               to kubernates use a registry. Either a public or private registry, this process
+#               is cumbersome and overcomplicated. This script solves this issue by a simple pipeline:
+#               | dockerfile to docker image -> export docker image to .tar -> import .tar image to kubernates |
+#               There are a few hidden gotchas, so this script should help fix those too
+
+# -- REQUIRED VARIABLES --
+
+DEFAULT_K_SOCK="/run/k3s/containerd/containerd.sock" # This is the default k3s containerd socket. (first gotcha as ctr does not see this sock by default)
+DEFAULT_K_NAMESPACE="k8s.io"                         # default namespace. (Second gotcha as without the kubernates socket, ctr does not show you this (More info on this in this README.md))
+DEFAULT_DOCKER_TAR_OUTPUT="/tmp"                     # By default, the script will create the .tar file in the tmp dir and will delete in on restart
+DEFAULT_DOCKER_TAR_OUTPUT_NAME="output"
+NAME_DOCKER_IMAGE=""
+DOCKERFILE_PATH=""
+
+# -- REQUIRED VARIABLES END --
+
+help() {
+  echo "Usage: ./dockerToKubeImage [-n <name of image:tag>][-p /path/to/dockerfile/folder][-o <tar output dir> (optional)][-h]"
+  echo "Example Usage (same directory as dockerfile): ./dockerToKubeImage -n test:latest -p ./"
+  echo "NOTE: Make sure to set the required variables before running script..."
+}
+# If run without any arguments
+[ $# -eq 0 ] && help && exit 1
+
+# If run without proper arguments
+while getopts ":hn:p:o:" flag; do
+  case "${flag}" in
+  h) help ;;
+  o) # Can change the default output for docker tar file if wanting to save it somewhere (optional)
+    DEFAULT_DOCKER_TAR_OUTPUT=${OPTARG} ;;
+  n) # REQUIRED
+    NAME_DOCKER_IMAGE=${OPTARG}
+    ;;
+  p) # REQUIRED
+    DOCKERFILE_PATH=${OPTARG}
+    ;;
+  *) echo "Invalid option: -$OPTARG" && help ;;
+  esac
+done
+
+# Make sure -n and -p are triggered and set b4 continuing
+if [ "$NAME_DOCKER_IMAGE" == "" ]; then
+  echo "-n <Name for the resulting docker image> is required"
+  help
+  exit 0
+fi
+
+if [ "$DOCKERFILE_PATH" == "" ]; then
+  echo "-p <DockerFile path> is required"
+  help
+  exit 0
+fi
+
+# Make sure docker and ctr exist
+if ! command -v docker 2>&1 >/dev/null; then
+  echo "docker was not found on system, it is required..."
+  exit 1
+fi
+
+if ! command -v ctr 2>&1 >/dev/null; then
+  echo "ctr was not found on system, it is required..."
+  exit 1
+fi
+
+# Now to the actual commands
+
+# 1. Build dockerfile
+docker build -t "$NAME_DOCKER_IMAGE" "$DOCKERFILE_PATH"
+
+# 2. Export docker image to .tar file
+
+docker image save -o "${DEFAULT_DOCKER_TAR_OUTPUT}/${DEFAULT_DOCKER_TAR_OUTPUT_NAME}.tar" "$NAME_DOCKER_IMAGE"
+
+# 3. Import .tar
+
+sudo ctr -a "$DEFAULT_K_SOCK" -n "$DEFAULT_K_NAMESPACE" images import "${DEFAULT_DOCKER_TAR_OUTPUT}/${DEFAULT_DOCKER_TAR_OUTPUT_NAME}.tar"

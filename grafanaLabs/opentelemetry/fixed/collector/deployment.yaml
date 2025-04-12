@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-collector-fixed
+spec:
+  selector:
+    matchLabels:
+      app: otel-collector-fixed
+  template:
+    metadata:
+      labels:
+        app: otel-collector-fixed
+    spec:
+      containers:
+        - name: otel-collector-fixed
+          # fixed versions for pyroscope, otel-collector, otel-profiler due to protocol changes
+          image: otel/opentelemetry-collector-contrib:0.114.0
+          args:
+            - "--config=/etc/otel-collector-config.yaml"
+            - "--feature-gates=service.profilesSupport"
+          volumeMounts:
+            - name: config
+              mountPath: /etc/otel-collector-config.yaml
+              subPath: config.yaml
+      volumes:
+        - name: config
+          configMap:
+            name: otel-collector-fixed-config

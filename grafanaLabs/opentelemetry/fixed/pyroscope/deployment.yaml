@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pyroscope-fixed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pyroscope-fixed
+  template:
+    metadata:
+      labels:
+        app: pyroscope-fixed
+    spec:
+      containers:
+        - name: pyroscope-fixed
+          image: grafana/pyroscope:weekly-f96-1886f2c42
+          # fixed versions for pyroscope, otel-collector, otel-profiler due to protocol changes
+          args:
+            - "-self-profiling.disable-push=true"
+          ports:
+            - containerPort: 4040

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: pyroscope-fixed-service
+spec:
+  selector:
+    app: pyroscope-fixed
+  ports:
+    - protocol: TCP
+      port: 4040
+      targetPort: 4040
