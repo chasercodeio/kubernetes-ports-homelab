@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: convertx-env-configmap
+  namespace: homelab
+data:
+  JWT_SECRET: "" # use "openssl rand -hex 32"
+  ACCOUNT_REGISTRATION: "false"
+  HTTP_ALLOWED: "true"
+  ALLOW_UNAUTHENTICATED: "true"
+  AUTO_DELETE_EVERY_N_HOURS: "1"
+  HIDE_HISTORY: "false"

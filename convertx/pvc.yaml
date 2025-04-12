@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: convertx-local-data-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: convertx-local-storage
+  volumeName: convertx-local-data-pv
+  resources:
+    requests:
+      storage: 2Gi

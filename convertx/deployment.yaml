@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: convertx
+  namespace: homelab
+  labels:
+    name: convertx
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: convertx
+  template:
+    metadata:
+      labels:
+        name: convertx
+    spec:
+      securityContext:
+        fsGroup: 1000
+        # runAsUser: 1000
+        # runAsGroup: 1000
+      containers:
+        - name: convertx
+          image: "ghcr.io/c4illin/convertx:v0.12.1" # https://github.com/C4illin/ConvertX
+          envFrom:
+            - configMapRef:
+                name: convertx-env-configmap
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/data
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: convertx-local-data-pvc
