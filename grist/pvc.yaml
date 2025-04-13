@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: grist-local-persist-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: grist-local-storage
+  volumeName: grist-local-persist-pv
+  resources:
+    requests:
+      storage: 2Gi

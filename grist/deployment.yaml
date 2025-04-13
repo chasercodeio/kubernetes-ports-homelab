@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grist
+  namespace: homelab
+  labels:
+    name: grist
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: grist
+  template:
+    metadata:
+      labels:
+        name: grist
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: grist # https://github.com/gristlabs/grist-core
+          image: "gristlabs/grist:1.5.1"
+          env:
+            - name: PORT
+              value: "3000"
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /persist
+              name: persist
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: persist
+          persistentVolumeClaim:
+            claimName: grist-local-persist-pvc

@@ -15,6 +15,7 @@
 10. [Mealie](./mealie/)
 11. [ConvertX](./convertx/)
 12. [Kavita](./kavita/)
+13. [Grist](./grist/)
 
 
 ## Pre-Service configuration
