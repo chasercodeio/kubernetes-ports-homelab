@@ -14,6 +14,7 @@
 9. [GrafanaLabs Alloy](./grafanaLabs/README.md)
 10. [Mealie](./mealie/)
 11. [ConvertX](./convertx/)
+12. [Kavita](./kavita/)
 
 
 ## Pre-Service configuration

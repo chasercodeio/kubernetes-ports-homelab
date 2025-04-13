@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kavita
+  namespace: homelab
+  labels:
+    name: kavita
+    # role: egress-allow
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: kavita
+  template:
+    metadata:
+      labels:
+        name: kavita
+        # role: egress-allow
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: kavita # https://github.com/Kareadita/Kavita
+          # image: "ghcr.io/kareadita/kavita:v0.8.5.11" # Github image with latest fixed version
+          # image: "lscr.io/linuxserver/kavita:latest" # LinuxServerIO version
+          image: "jvmilazz0/kavita:nightly-0.8.5.26" # Dockerhub Image
+          env:
+            - name: TZ
+              value: AWST
+            - name: DOTNET_SYSTEM_GLOBALIZATION_INVARIANT
+              value: "true"
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+          resources:
+            limits:
+              memory: "2Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /data
+              name: data
+              subPath: data
+            - mountPath: /kavita/config
+              name: data
+              subPath: config
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: kavita-local-data-pvc

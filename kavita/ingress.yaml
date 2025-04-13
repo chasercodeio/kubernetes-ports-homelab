@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: kavita-ing
+  namespace: homelab
+  labels:
+    name: kavita
+spec:
+  rules:
+    - host: localhost
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: kavita-svc
+                port:
+                  number: 5000
