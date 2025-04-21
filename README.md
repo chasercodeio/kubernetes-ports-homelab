@@ -3,20 +3,20 @@
 > Please keep in mind that I am still learning Kubernetes and the resources it has. For each of these, please make sure to DYOR and enforce the actions you want in your own environment.
 
 ## Working Services
-1. [Otterwiki](./otterwiki/README.md)
-2. [HomePage](./homepage/README.md)
-3. [Glance](./glance/README.md)
-4. [Ntfy](./ntfy/README.md)
-5. [Keycloak](./keycloak/README.md)
-6. [Outline Wiki](./outline/)
+1. [Otterwiki - Minimalistic wiki powered by python, markdown and git](./otterwiki/README.md)
+2. [HomePage - Modern, fully static, highly customizable application dashboard](./homepage/README.md)
+3. [Glance - All your feeds in one place, highly customizable dashboard](./glance/README.md)
+4. [Ntfy - "Notify", Send push notifications to your phone](./ntfy/README.md)
+5. [Keycloak - OSS Identity and Access Management. Useful for Auth](./keycloak/README.md)
+6. [Outline Wiki - Team knowledge base for internal documentation](./outline/)
 7. [GrafanaLabs Grafana](./grafanaLabs/README.md)
-8. [GrafanaLabs Pyroscope UI](./grafanaLabs/README.md)
-9. [GrafanaLabs Alloy](./grafanaLabs/README.md)
-10. [Mealie](./mealie/)
-11. [ConvertX](./convertx/)
-12. [Kavita](./kavita/)
-13. [Grist](./grist/)
-14. Stirling-PDF
+8. [GrafanaLabs Pyroscope UI *Moving*](./grafanaLabs/README.md)
+9. [GrafanaLabs Alloy *Moving*](./grafanaLabs/README.md)
+10. [Mealie - Easy to use recipe management app](./mealie/)
+11. [ConvertX - File converter, supports 1000+ formats](./convertx/)
+12. [Kavita - Fast and rich cross platform reading server](./kavita/)
+13. [Grist - Modern relational Spreadsheet](./grist/)
+14. [Stirling-PDF - Perform various operations on PDFs](./stirling-pdf/)
 
 
 ## Pre-Service configuration
