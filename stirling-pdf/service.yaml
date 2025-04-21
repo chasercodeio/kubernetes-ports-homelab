@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: stirlingpdf-svc
+  namespace: homelab
+  labels:
+    name: stirlingpdf-svc
+  annotations:
+    name: stirlingpdf-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: stirlingpdf

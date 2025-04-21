@@ -4,3 +4,6 @@
 */home
 *.db
 *build
+grafanaLabs/beyla/
+grafanaLabs/mimir/
+grafanaLabs/prometheus/

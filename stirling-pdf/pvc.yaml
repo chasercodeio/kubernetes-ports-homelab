@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: stirlingpdf-local-data-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: stirlingpdf-local-storage
+  volumeName: stirlingpdf-local-data-pv
+  resources:
+    requests:
+      storage: 2Gi
+      

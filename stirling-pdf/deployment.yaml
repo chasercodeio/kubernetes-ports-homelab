@@ -1,0 +1,72 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stirlingpdf
+  namespace: homelab
+  labels:
+    name: stirlingpdf
+    role: egress-allow
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: stirlingpdf
+  template:
+    metadata:
+      labels:
+        name: stirlingpdf
+        role: egress-allow
+    spec:
+      securityContext:
+        # runAsUser: 1000
+        # runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: stirlingpdf # https://github.com/stirlingpdf/stirlingpdf
+          image: "docker.stirlingpdf.com/stirlingtools/stirling-pdf:latest-ultra" # 
+          env:
+            - name: LANGS
+              value: en_GB
+            - name: DOCKER_ENABLE_SECURITY
+              value: "false"
+            - name: UI_APPNAME
+              value: "Stirling PDF"
+            - name: UI_HOMEDESCRIPTION
+              value: "Your locally hosted one-stop-shop for all your PDF needs"
+            - name: UI_APPNAVBARNAME
+              value: "Stirling PDF Lite"
+          resources:
+            limits:
+              memory: "500Mi"
+              cpu: "500m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /usr/share/tessdata
+              name: data
+              subPath: tessdata
+            - mountPath: /configs
+              name: data
+              subPath: configs
+            - mountPath: /customFiles/
+              name: data
+              subPath: customFiles
+            - mountPath: /logs/
+              name: data
+              subPath: logs
+            - mountPath: /pipeline/
+              name: data
+              subPath: pipeline
+          securityContext:
+            allowPrivilegeEscalation: false
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: stirlingpdf-local-data-pvc
+

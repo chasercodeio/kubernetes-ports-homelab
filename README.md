@@ -16,6 +16,7 @@
 11. [ConvertX](./convertx/)
 12. [Kavita](./kavita/)
 13. [Grist](./grist/)
+14. Stirling-PDF
 
 
 ## Pre-Service configuration
@@ -100,3 +101,22 @@ kubectl apply -f homelab-nw-ex-policy.yaml
 - VictoriaMetrics
 - VictoriaLogs
 - HEAPS more ...
+
+## Network "Roles" for current Pods
+
+### None
+
+- ConvertX
+- Grist
+- HomePage
+- Kavita ( Initially does require to download some stuff, but once setup, not needed)
+- Keycloak
+- Ntfy
+- Otterwiki
+- Outline
+
+
+### egress-allow
+- Glance
+- Mealie
+- StirlingPDF-{lite, full, fat} (For now)
