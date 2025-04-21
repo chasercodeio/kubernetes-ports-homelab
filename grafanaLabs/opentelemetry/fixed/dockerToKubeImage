@@ -18,28 +18,43 @@ DEFAULT_DOCKER_TAR_OUTPUT="/tmp"                     # By default, the script wi
 DEFAULT_DOCKER_TAR_OUTPUT_NAME="output"
 NAME_DOCKER_IMAGE=""
 DOCKERFILE_PATH=""
+DOCKERFILE_RM=false
 
 # -- REQUIRED VARIABLES END --
 
 help() {
-  echo "Usage: ./dockerToKubeImage [-n <name of image:tag>][-p /path/to/dockerfile/folder][-o <tar output dir> (optional)][-h]"
-  echo "Example Usage (same directory as dockerfile): ./dockerToKubeImage -n test:latest -p ./"
-  echo "NOTE: Make sure to set the required variables before running script..."
+  echo -e "Usage: ./dockerToKubeImage [-d <>][-p <>][-o <>][-s <>][-n <>][-r][-h] \n \t\t Options:"
+  echo -e "\t\t\t [-d]: Docker image name:tag (required)"
+  echo -e "\t\t\t [-p]: Path to dockerfile (can be relative) (required)"
+  echo -e "\t\t\t [-o]: change docker image .tar file (Default: /tmp/) (optional)"
+  echo -e "\t\t\t [-s]: The containerd runtime sock for kubernates (Default: /run/k3s/containerd/containerd.sock) (optional)"
+  echo -e "\t\t\t [-n]: Default kubernates namespace (using containerd...different from "kubectl get namespace") (Default: k8s.io) (optional)"
+  echo -e "\t\t\t [-r]: Remove the created image from docker images (default: false) (optional)"
+  echo -e "\t\t\t [-h]: This help option"
 }
 # If run without any arguments
 [ $# -eq 0 ] && help && exit 1
 
 # If run without proper arguments
-while getopts ":hn:p:o:" flag; do
+while getopts ":hd:p:o:s:r" flag; do
   case "${flag}" in
-  h) help ;;
+  h) help && exit 0 ;;
   o) # Can change the default output for docker tar file if wanting to save it somewhere (optional)
     DEFAULT_DOCKER_TAR_OUTPUT=${OPTARG} ;;
-  n) # REQUIRED
+  d) # REQUIRED
     NAME_DOCKER_IMAGE=${OPTARG}
     ;;
   p) # REQUIRED
     DOCKERFILE_PATH=${OPTARG}
+    ;;
+  s) # optional
+    DEFAULT_K_SOCK=${OPTARG}
+    ;;
+  n) # Optional
+    DEFAULT_K_NAMESPACE=${OPTARG}
+    ;;
+  r) # Optional
+    DOCKERFILE_RM=true
     ;;
   *) echo "Invalid option: -$OPTARG" && help ;;
   esac
@@ -78,6 +93,10 @@ docker build -t "$NAME_DOCKER_IMAGE" "$DOCKERFILE_PATH"
 
 docker image save -o "${DEFAULT_DOCKER_TAR_OUTPUT}/${DEFAULT_DOCKER_TAR_OUTPUT_NAME}.tar" "$NAME_DOCKER_IMAGE"
 
+# 2.5 Optional...if toggled... delete the resulting docker image from docker
+if [ $DOCKERFILE_RM ]; then
+  docker image rm $NAME_DOCKER_IMAGE
+fi
 # 3. Import .tar
 
 sudo ctr -a "$DEFAULT_K_SOCK" -n "$DEFAULT_K_NAMESPACE" images import "${DEFAULT_DOCKER_TAR_OUTPUT}/${DEFAULT_DOCKER_TAR_OUTPUT_NAME}.tar"
