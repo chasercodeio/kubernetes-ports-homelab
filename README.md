@@ -17,6 +17,7 @@
 12. [Kavita - Fast and rich cross platform reading server](./kavita/)
 13. [Grist - Modern relational Spreadsheet](./grist/)
 14. [Stirling-PDF - Perform various operations on PDFs](./stirling-pdf/)
+15. [Diun - Docker Image Update Notifier (Working for kubernetes)](./diun/)
 
 
 ## Pre-Service configuration
@@ -43,6 +44,7 @@ kubectl apply -f homelab-namespace.yaml
 **Network Policy:**
 Having a _Global_ Network Policy allows for more control over the network traffic in the cluster. 
 [For more info on Kubernetes Network Policy](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+
 **[I have now moved to using Cilium as my container networking interface and all network policies are in CiliumNetworkPolicy and CiliumClusterwideNetworkPolicy. This is better explained in the pre-config folder](./pre-config/README.md)**
 
 ## TODO:

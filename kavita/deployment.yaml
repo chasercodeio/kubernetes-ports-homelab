@@ -3,9 +3,6 @@ kind: Deployment
 metadata:
   name: kavita
   namespace: homelab
-  labels:
-    name: kavita
-    # role: egress-allow
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -18,7 +15,8 @@ spec:
     metadata:
       labels:
         name: kavita
-        # role: egress-allow
+        ingress: lan
+        egress: all
     spec:
       securityContext:
         fsGroup: 1000
