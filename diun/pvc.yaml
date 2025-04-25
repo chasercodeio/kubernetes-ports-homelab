@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: diun-local-data-pvc
+  # namespace: default
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: diun-local-data-storage
+  volumeName: diun-local-data-pv
+  resources:
+    requests:
+      storage: 1Gi

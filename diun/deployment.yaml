@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: homelab
+  # namespace: default
+  name: diun
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: diun
+  template:
+    metadata:
+      labels:
+        name: diun
+        egress: all
+        ingress: all
+      annotations:
+        diun.enable: "true" # Useless for now as all are watched
+    spec:
+      serviceAccountName: diun
+      containers:
+        - name: diun
+          image: crazymax/diun:4.29.0 # https://crazymax.dev/diun/faq/#customize-the-hostname
+          imagePullPolicy: IfNotPresent
+          args: ["serve"]
+          envFrom:
+            - configMapRef:
+                name: diun-configmap
+          volumeMounts:
+            - mountPath: "/data"
+              name: data
+      restartPolicy: Always
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: diun-local-data-pvc

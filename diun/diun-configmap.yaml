@@ -1,0 +1,39 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: diun-configmap
+  # namespace: default
+  namespace: homelab
+data:
+  TZ: "Australia/Perth"
+  LOG_LEVEL: "debug"
+  LOG_JSON: "false"
+  DIUN_WATCH_WORKERS: "20"
+  # DIUN_WATCH_SCHEDULE: "0 */6 * * *"
+  DIUN_WATCH_SCHEDULE: "*/2 * * * *"
+  DIUN_WATCH_JITTER: "30s"
+  DIUN_WATCH_FIRSTCHECKNOTIF: "true" # TESTING
+  DIUN_DEFAULTS_WATCHREPO: "true"
+  DIUN_DEFAULTS_NOTIFYON: "new,update"
+  DIUN_DEFAULTS_SORTTAGS: "semver"
+  DIUN_DEFAULTS_MAXTAGS: "1"
+  DIUN_PROVIDERS_KUBERNETES: "true"
+  # DIUN_PROVIDERS_KUBERNETES_ENDPOINT: "http://localhost:8080"
+  DIUN_PROVIDERS_KUBERNETES_NAMESPACES: "default,homelab"
+  DIUN_PROVIDERS_KUBERNETES_WATCHBYDEFAULT: "true"
+  # INFO ON LABELS: https://crazymax.dev/diun/providers/kubernetes/#kubernetes-annotations
+  # -- [ Following section is for notifying using NTFY ] -- #
+  # DIUN_NOTIF_NTFY_ENDPOINT: "http://10.42.0.241"
+  DIUN_NOTIF_NTFY_ENDPOINT: "http://ntfy-svc"
+  # DIUN_NOTIF_NTFY_TOKEN: ""
+  # DIUN_NOTIF_NTFY_TOKENFILE: ""
+  DIUN_NOTIF_NTFY_TOPIC: "TestDiun"
+  DIUN_NOTIF_NTFY_PRIORITY: "3"
+  DIUN_NOTIF_NTFY_TAGS: "whale"
+  DIUN_NOTIF_NTFY_TIMEOUT: "5s"
+  DIUN_NOTIF_NTFY_TEMPLATETITLE: | 
+    '{{ .Entry.Image }} {{ if (eq .Entry.Status "new") }}is available{{ else }}has been updated{{ end }}'
+  DIUN_NOTIF_NTFY_TEMPLATEBODY: | 
+    'Docker tag {{ if .Entry.Image.HubLink }}[**{{ .Entry.Image }}**]({{ .Entry.Image.HubLink }}){{ else }}**{{ .Entry.Image }}**{{ end }} which you subscribed to through {{ .Entry.Provider }} provider {{ if (eq .Entry.Status "new") }}is available{{ else }}has been updated{{ end }} on {{ .Entry.Image.Domain }} registry (triggered by {{ .Meta.Hostname }} host).'
+  
