@@ -7,5 +7,7 @@ spec:
     matchLabels:
       ingress: all
   ingress:
+    - fromEndpoints:
+      - {}
     - fromEntities:
       - world
