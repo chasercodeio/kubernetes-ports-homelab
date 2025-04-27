@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: penpot-postgres-svc
+  namespace: homelab
+  labels:
+    name: penpot-postgres-svc
+  annotations:
+    name: penpot-postgres-svc
+spec:
+  type: ClusterIP
+  # externalTrafficPolicy: Local
+  ports:
+    - port: 5432
+      name: postgres
+      targetPort: 5432
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: penpot-postgres

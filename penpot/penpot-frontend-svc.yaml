@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: penpot-frontend-svc
+  namespace: homelab
+  labels:
+    name: penpot-frontend-svc
+  annotations:
+    name: penpot-frontend-svc
+spec:
+  type: NodePort
+  # externalTrafficPolicy: Local
+  ports:
+    - port: 8080
+      name: frontend
+      targetPort: 8080
+      protocol: TCP
+      nodePort: 30100
+  selector:
+    name: penpot-frontend

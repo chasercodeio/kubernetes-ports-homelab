@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: penpot-mailcatch-svc
+  namespace: homelab
+  labels:
+    name: penpot-mailcatch-svc
+  annotations:
+    name: penpot-mailcatch-svc
+spec:
+  type: ClusterIP
+  # externalTrafficPolicy: Local
+  ports:
+    - port: 1025
+      name: smtp
+      targetPort: 1025
+      protocol: TCP
+      # nodePort: 30000
+    - port: 1080
+      name: mailcatch
+      targetPort: 1080
+      protocol: TCP
+  selector:
+    name: penpot-mailcatch

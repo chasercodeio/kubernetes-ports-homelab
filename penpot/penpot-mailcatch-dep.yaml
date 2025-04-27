@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penpot-mailcatch
+  namespace: homelab
+  labels:
+    name: penpot-mailcatch
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: penpot-mailcatch
+  template:
+    metadata:
+      labels:
+        name: penpot-mailcatch
+        ingress: lan
+        egress: lan
+    spec:
+      securityContext:
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+        - name: penpot-mailcatch
+          image: "sj26/mailcatcher:latest" # 
+          imagePullPolicy: IfNotPresent
+          envFrom:
+          - configMapRef:
+              name: penpot-configmap
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "500m"
+          ports:
+            - name: smtp
+              containerPort: 1025
+              protocol: TCP
+            - name: mailcatch
+              containerPort: 1080
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false

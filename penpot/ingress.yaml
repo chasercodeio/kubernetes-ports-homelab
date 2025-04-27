@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: penpot-backend-http-ingress
+  namespace: homelab
+  # annotations:
+  #   nginx.ingress.kubernetes.io/proxy-body-size: 100m
+spec:
+  rules:
+    # - host: localhost
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: penpot-frontend-svc
+                port:
+                  number: 8080
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: penpot-backend-svc
+                port:
+                  number: 6060
+          - path: /assets
+            pathType: Prefix
+            backend:
+              service:
+                name: penpot-backend-svc
+                port:
+                  number: 6060
+          - path: /webhooks
+            pathType: Prefix
+            backend:
+              service:
+                name: penpot-backend-svc
+                port:
+                  number: 6060
+          - path: /ws/notifications
+            pathType: Prefix
+            backend:
+              service:
+                name: penpot-backend-svc
+                port:
+                  number: 6060

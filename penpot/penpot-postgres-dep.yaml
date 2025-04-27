@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penpot-postgres
+  namespace: homelab
+  labels:
+    name: penpot-postgres
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: penpot-postgres
+  template:
+    metadata:
+      labels:
+        name: penpot-postgres
+        egress: lan
+        ingress: lan
+    spec:
+      securityContext:
+        fsGroup: 1000
+        # runAsUser: 1000
+        # runAsGroup: 1000
+      containers:
+        - name: penpot-postgres
+          image: "postgres:15" # 
+          imagePullPolicy: IfNotPresent
+          envFrom:
+          - configMapRef:
+              name: penpot-configmap
+          resources:
+            limits:
+              memory: "200Mi"
+              cpu: "500m"
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: config
+              subPath: postgresql
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: penpot-local-config-pvc

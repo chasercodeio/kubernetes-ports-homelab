@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: penpot-backend-svc
+  namespace: homelab
+  labels:
+    name: penpot-backend-svc
+  annotations:
+    name: penpot-backend-svc
+spec:
+  type: ClusterIP
+  # externalTrafficPolicy: Local
+  ports:
+    - port: 6060
+      name: backend
+      targetPort: 6060
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: penpot-backend

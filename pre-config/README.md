@@ -33,6 +33,7 @@ Decided to install Cilium Networking as my container networking interface as it 
     - [egress: lan](./cilium_nw/roles/allow_lan_egress.yaml)
     - [ingress: all](./cilium_nw/roles/allow_all_ingress.yaml)
     - [ingress: lan](./cilium_nw/roles/allow_lan_ingress.yaml)
+    - [egress: allow_kubeapi_server](./cilium_nw/roles/allow_pods_kubeapi_bidir.yaml)
     - (TODO: maybe add roles for just pod-to-pod and not localhost?)
     - (With above, maybe also add one for node only (localhost, pod-to-pod))
 

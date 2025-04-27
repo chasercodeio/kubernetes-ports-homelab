@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: penpot-redis
+  namespace: homelab
+  labels:
+    name: penpot-redis
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: penpot-redis
+  template:
+    metadata:
+      labels:
+        name: penpot-redis
+        egress: lan
+        ingress: lan
+    spec:
+      securityContext:
+        fsGroup: 1000
+        # runAsUser: 1000
+        # runAsGroup: 1000
+      containers:
+        - name: penpot-redis
+          image: "redis:7.2" # 
+          imagePullPolicy: IfNotPresent
+          env: []
+          # envFrom:
+          # - configMapRef:
+          #     name: penpot-configmap
+          resources:
+            limits:
+              memory: "250Mi"
+              cpu: "500m"
+          ports:
+            - name: redis
+              containerPort: 6379
+              protocol: TCP
+          securityContext:
+            allowPrivilegeEscalation: false
