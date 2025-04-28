@@ -1,0 +1,13 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: homelab
+resources:
+#  - namespace.yaml (apply this first from inital dir)
+  - pv.yaml
+  - pvc.yaml
+  - database-service.yaml
+  - hedgedoc-service.yaml
+  - hedgedoc-configmap.yaml
+  # - hedgedoc-ingress.yaml
+  - database-deployment.yaml
+  - hedgedoc-deployment.yaml

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: homelab
+  name: hedgedoc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: hedgedoc
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        name: hedgedoc
+        egress: lan
+        ingress: lan
+    spec:
+      containers:
+        - name: hedgedoc
+          # image: quay.io/hedgedoc/hedgedoc:latest
+          image: linuxserver/hedgedoc:1.10.3
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: hedgedoc-configmap
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          ports:
+            - containerPort: 30200
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /hedgedoc/public/uploads
+              name: hedgedoc-uploads
+              subPath: hedgedoc-uploads
+            - mountPath: /config
+              name: hedgedoc-uploads
+              subPath: hedgedoc-config
+      volumes:
+        - name: hedgedoc-uploads
+          persistentVolumeClaim:
+            claimName: hedgedoc-local-data-pvc

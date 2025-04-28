@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hedgedoc-svc
+  namespace: homelab
+spec:
+  selector:
+    name: hedgedoc # This should be the name of the deployment
+  type: NodePort
+  externalTrafficPolicy: Local
+  ports:
+    - protocol: TCP
+      port: 30200
+      targetPort: 30200
+      nodePort: 30200

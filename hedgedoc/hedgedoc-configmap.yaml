@@ -1,0 +1,27 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: hedgedoc-configmap
+  namespace: homelab
+data:
+  TZ: "Etc/UTC"
+  PUID: "1000"
+  PGID: "1000"
+  # - CMD_DB_URL: postgres://hedgedoc:password@hedgedoc-database-svc:5432/hedgedoc
+  # - CMD_DOMAIN: localhost
+  # - CMD_URL_ADDPORT: "true"
+  # - CMD_PORT: "30200"
+  # DB_HOST: "postgres://hedgedoc-database-svc"
+  DB_HOST: "hedgedoc-database-svc"
+  DB_PORT: "5432"
+  CMD_DB_DIALECT: "postgres"
+  DB_USER: hedgedoc
+  DB_PASS: password
+  DB_NAME: hedgedoc
+  CMD_DOMAIN: "localhost"
+  CMD_URL_ADDPORT: "true"
+  CMD_PORT: "30200"
+  CMD_PROTOCOL_USESSL: "false"
+  CMD_ALLOW_ORIGIN: "['localhost']"
+

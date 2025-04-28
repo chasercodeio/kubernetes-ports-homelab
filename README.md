@@ -18,6 +18,8 @@
 13. [Grist - Modern relational Spreadsheet](./grist/)
 14. [Stirling-PDF - Perform various operations on PDFs](./stirling-pdf/)
 15. [Diun - Docker Image Update Notifier (Working for kubernetes)](./diun/)
+16. [Penpot](./penpot/README.md)
+17. [Hedgedoc](./hedgedoc/)
 
 
 ## Pre-Service configuration
