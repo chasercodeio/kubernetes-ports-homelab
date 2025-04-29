@@ -1,10 +1,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: convertx
+  name: trilium
   namespace: homelab
   labels:
-    name: convertx
+    name: trilium
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -12,37 +12,37 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      name: convertx
+      name: trilium
   template:
     metadata:
       labels:
-        name: convertx
+        name: trilium
     spec:
       securityContext:
         fsGroup: 1000
         # runAsUser: 1000
         # runAsGroup: 1000
       containers:
-        - name: convertx
-          image: "ghcr.io/c4illin/convertx:v0.12.1" # https://github.com/C4illin/ConvertX
-          imagePullPolicy: IfNotPresent
-          envFrom:
-            - configMapRef:
-                name: convertx-env-configmap
+        - name: trilium # https://github.com/zadam/trilium
+          image: "zadam/trilium"
+          env:
+            - name: TRILIUM_DATA_DIR
+              value: /home/node/trilium-data
           resources:
             limits:
               memory: "1Gi"
               cpu: "1000m"
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 3000
+              containerPort: 8080
               protocol: TCP
           volumeMounts:
-            - mountPath: /app/data
+            - mountPath: /home/node/trilium-data
               name: data
           securityContext:
             allowPrivilegeEscalation: false
       volumes:
         - name: data
           persistentVolumeClaim:
-            claimName: convertx-local-data-pvc
+            claimName: trilium-local-data-pvc
