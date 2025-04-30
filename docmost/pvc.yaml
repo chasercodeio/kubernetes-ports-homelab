@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: docmost-local-config-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: docmost-local-storage
+  volumeName: docmost-local-config-pv
+  resources:
+    requests:
+      storage: 2Gi

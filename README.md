@@ -21,6 +21,7 @@
 16. [Penpot - Design & collaboration tool](./penpot/README.md)
 17. [Hedgedoc - Collaborative markdown editor](./hedgedoc/README.md)
 18. [Trilium Notes - Personal knowledge base](./trilium/README.md)
+19. [Docmost - Collaborative wiki](./docmost/)
 
 
 ## Pre-Service configuration

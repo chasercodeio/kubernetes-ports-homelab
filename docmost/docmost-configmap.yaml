@@ -1,0 +1,25 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: docmost-configmap
+  namespace: homelab
+data:
+  APP_URL: "http://0.0.0.0"
+  PORT: "3000"
+  APP_SECRET: ""
+  DATABASE_URL: "postgresql://docmost:testPass123@postgres-svc:5432/docmost?schema=public"
+  REDIS_URL: "redis://redis-svc:6379"
+  DISABLE_TELEMETRY: "true"
+  STORAGE_DRIVER: "local"
+  FILE_UPLOAD_SIZE_LIMIT: "200mb"
+
+  # --SMTP SETTINGS -- #
+  # MAIL_DRIVER: "smtp"
+  # SMTP_HOST: ""
+  # SMTP_PORT: ""
+  # SMTP_USERNAME: ""
+  # SMTP_PASSWORD: ""
+  # SMTP_SECURE: "false"
+  # MAIL_FROM_ADDRESS: "hello@docmost-local.com"
+  # MAIL_FROM_NAME: "Docmost"
