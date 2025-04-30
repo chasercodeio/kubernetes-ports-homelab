@@ -1,0 +1,14 @@
+apiVersion: "cilium.io/v2"
+kind: CiliumClusterwideNetworkPolicy
+metadata:
+  name: "allow-pods-kubeapi-egress"
+spec:
+  endpointSelector:
+    matchLabels:
+      kapi: "true" 
+  ingress:
+    - fromEntities:
+      - kube-apiserver
+  egress:
+    - toEntities:
+      - kube-apiserver
