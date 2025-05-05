@@ -1,0 +1,23 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otterwiki-configmap
+  namespace: homelab
+data:
+  SITE_NAME: "Otterwiki"
+  SITE_DESCRIPTION: "Store of information, as Markdown"
+  READ_ACCESS: "REGISTERED"
+  WRITE_ACCESS: "REGISTERED"
+  ATTACHMENT_ACCESS: "APPROVED"
+  DISABLE_REGISTRATION: "False"
+  AUTO_APPROVAL: "True"
+  EMAIL_NEEDS_CONFIRMATION: "False"
+  NOTIFY_ADMINS_ON_REGISTER: "True"
+  SIDEBAR_MENUTREE_MODE: "Sorted"
+  SIDEBAR_MENUTREE_MAXDEPTH: "unlimited"
+  COMMIT_MESSAGE: "OPTIONAL"
+  RETAIN_PAGE_NAME_CASE: "False"
+  GIT_WEB_SERVER: "False"
+  AUTH_METHOD: "SIMPLE"
+

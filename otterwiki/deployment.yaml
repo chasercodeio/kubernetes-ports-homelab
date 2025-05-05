@@ -17,13 +17,17 @@ spec:
     metadata:
       labels:
         name: otterwiki
+        egress: lan
+        ingress: lan
     spec:
       securityContext:
         fsGroup: 1000
       containers:
         - name: otterwiki # https://github.com/redimp/otterwiki
-          image: "redimp/otterwiki:2.10.4" # 
-          env: []
+          image: "redimp/otterwiki:2.10.6-slim" # can change to the non-slim variant if you want
+          envFrom:
+            - configMapRef:
+                name: otterwiki-configmap
           resources:
             limits:
               memory: "200Mi"
@@ -31,7 +35,7 @@ spec:
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 80
+              containerPort: 8080 # if not -slim var, change to 80
               protocol: TCP
           volumeMounts:
             - mountPath: /app-data

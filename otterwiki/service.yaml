@@ -10,9 +10,9 @@ metadata:
 spec:
   type: ClusterIP # if you want to be able to use localhost:<port> use "NodePort" here.
   ports:
-    - port: 80
+    - port: 8080
       name: http
-      targetPort: http
+      targetPort: 8080
       protocol: TCP
       # nodePort: 30000 # If using nodeport, the port number cannot be below 30000 and above some number i forgot
   selector:
