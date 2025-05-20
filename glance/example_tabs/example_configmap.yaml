@@ -1,0 +1,153 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: finance-configmap
+  namespace: homelab
+data:
+  investments.yml: |
+    - name: Finance
+      columns:
+        - size: small
+          widgets:
+            - type: calendar
+              first-day-of-week: monday
+            - type: rss
+              limit: 20
+              collapse-after: 5
+              cache: 12h
+              feeds:
+                - url: https://blogs.cfainstitute.org/investor/feed/
+                  title: CFA Institute Enterprising Investor Blogs
+                - url: https://www.betterment.com/resources/rss.xml
+                  title: Betterment RSS
+                - url: https://au.investing.com/rss/news_301.rss
+                  title: Investing.com - Crypto
+                - url: https://au.investing.com/rss/news_1.rss
+                  title: Investing.com - Forex
+                - url: https://au.investing.com/rss/news_285.rss
+                  title: Investing.com - Popular
+                - url: https://au.investing.com/rss/news_25.rss
+                  title: Investing.com - Stock Market
+                - url: https://au.investing.com/rss/news_14.rss
+                  title: Investing.com - Economy
+                - url: https://au.investing.com/rss/news_287.rss
+                  title: Investing.com - Investing Ideas
+                - url: https://au.investing.com/rss/market_overview.rss
+                  title: Investing.com - Market Overview
+                - url: https://au.investing.com/rss/286.rss
+                  title: Investing.com - Most Popular Analysis and Opinion
+                - url: https://www.whitecoatinvestor.com/feed/
+                  title: WhiteCoatInvestor - RSS
+                - url: https://www.barefootinvestor.com/articles?format=rss
+                  title: BareFootInvestor - RSS
+                - url: https://investmentmoats.com/feed/
+                  title: InvestMoats - RSS
+            - type: markets
+              markets:
+                - symbol: TSLA
+                  name: Tesla
+                - symbol: NVDA
+                  name: NVIDIA
+                - symbol: BRK-B
+                  name: Berkshire Hathaway
+                - symbol: AAPL
+                  name: APPLE
+                - symbol: AMZN
+                  name: AMAZON
+                - symbol: GOOGL
+                  name: Google
+        - size: full
+          widgets:
+            - type: group
+              widgets:
+                - type: reddit
+                  subreddit: ausstocks
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: YieldMaxETFs
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: Bogleheads
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: RippleTalk
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: CryptoMarkets
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: Fire
+                  show-thumbnails: true
+            - type: videos
+              channels:
+                - UCdAz9h6B4j48m_Z-5q0GehA # Crypto Sensei
+                - UChTEtqF5rY5bhNXdFpKkn-Q # DHN Crypto
+                - UCMXzc5fADodNEdkSbHXZlpg # AI DRIVR
+                - UCPa0bvFsR1mbBpk5mIPFGLA # Vincent Chan
+                - UCZ4AMrDcNrfy3X6nsU8-rPg # Economics Explained
+                - UC5Ghe5TBQGYIOANuiNW4hDQ # Garys Economics
+                - UCgv4dPk_qZNAbUW9WkuLPSA # Atrioc
+            - type: group
+              widgets:
+                - type: reddit
+                  subreddit: Daytrading
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: spy
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: investinq
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: dividends
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: ASX
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: QuiverQuantitative
+                  show-thumbnails: true
+        - size: small
+          widgets:
+            - type: markets
+              markets:
+                - symbol: IVV.AX
+                  name: iShares S&P 500
+                - symbol: IHVV.AX
+                  name: IVV AUD Hedged
+                - symbol: IOZ.AX
+                  name: iShares S&P/ASX 200
+                - symbol: IZZ.AX
+                  name: iShares China Large-Cap
+                - symbol: DHHF.AX
+                  name: Betashares All Growth
+                - symbol: IOO.AX
+                  name: iShares Global 100
+                - symbol: GOLD.AX
+                  name: Global X Physical Gold
+                - symbol: SGP.AX
+                  name: Stockland
+                - symbol: TLS.AX
+                  name: Telstra
+            - type: clock
+              hour-format: 12h
+              timezones:
+                - timezone: Australia/Perth
+                  label: Perth 
+                - timezone: Australia/Sydney
+                  label: Sydney
+            - type: markets
+              markets:
+                - symbol: BTC-AUD
+                  name: Bitcoin AUD
+                - symbol: XRP-AUD
+                  name: Ripple AUD
+                - symbol: XLM-AUD
+                  name: Stellar AUD
+                - symbol: HBAR-AUD
+                  name: Hedera AUD
+                - symbol: ADA-AUD
+                  name: Cardano AUD
+---
+
