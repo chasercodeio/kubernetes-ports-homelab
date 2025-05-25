@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: traggo
+  namespace: homelab
+  labels:
+    name: traggo
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: traggo
+  template:
+    metadata:
+      labels:
+        name: traggo
+        egress: lan
+        ingress: lan
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: traggo # https://traggo.net/install/
+          image: "traggo/server:0.7.1" # 
+          env:
+            - name: TRAGGO_DEFAULT_USER_NAME
+              value: "admin"
+            - name: TRAGGO_DEFAULT_USER_PASS
+              value: "Chaki1!"
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "500m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 3030
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/traggo/data
+              name: data
+          securityContext:
+            allowPrivilegeEscalation: false
+            # runAsUser: 1000
+            # runAsGroup: 1000
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: traggo-local-data-pvc

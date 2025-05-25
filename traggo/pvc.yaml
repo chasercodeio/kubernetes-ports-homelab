@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: traggo-local-data-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: traggo-local-storage
+  volumeName: traggo-local-data-pv
+  resources:
+    requests:
+      storage: 5Gi
