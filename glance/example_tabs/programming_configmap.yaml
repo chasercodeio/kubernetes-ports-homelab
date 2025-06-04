@@ -1,0 +1,79 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: programming-configmap
+  namespace: homelab
+data:
+  programming.yml: |
+    - name: Coding
+      columns:
+        - size: small
+          widgets:
+            - type: calendar
+              first-day-of-week: monday
+            - type: rss
+              limit: 20
+              collapse-after: 5
+              cache: 12h
+              feeds:
+                - url: https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=month
+                  title: Experienced Devs Reddit rss
+                - url: https://rss.beehiiv.com/feeds/ypr2bi0H9m.xml
+                  title: Hungry Minds - Alex Zajac
+        - size: full
+          widgets:
+            - type: group
+              widgets:
+                - type: reddit
+                  subreddit: selfhosted
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: computervision
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: FlutterDev
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: git
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: golang
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: htmx
+                  show-thumbnails: true
+            - type: videos
+              channels:
+                - UCUyeluBRhGPCW4rPe_UvBZQ  # ThePrimeTime
+            - type: group
+              widgets:
+                - type: reddit
+                  subreddit: bash
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: homelab
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: i3wm
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: kubernetes
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: neovim
+                  show-thumbnails: true
+                - type: reddit
+                  subreddit: unixporn
+                  show-thumbnails: true
+        - size: small
+          widgets:
+            - type: clock
+              hour-format: 12h
+              timezones:
+                - timezone: Australia/Perth
+                  label: Perth 
+                - timezone: Australia/Sydney
+                  label: Sydney
+---
+
