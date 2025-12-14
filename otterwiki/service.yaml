@@ -9,6 +9,7 @@ metadata:
     name: otterwiki-svc
 spec:
   type: ClusterIP # if you want to be able to use localhost:<port> use "NodePort" here.
+  # externalTrafficPolicy: Local
   ports:
     - port: 8080
       name: http

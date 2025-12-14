@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bentopdf
+  namespace: homelab
+  labels:
+    name: bentopdf
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: bentopdf
+  template:
+    metadata:
+      labels:
+        name: bentopdf
+        egress: lan
+        ingress: lan
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: bentopdf # https://github.com/alam00000/bentopdf
+          # image: "bentopdf/bentopdf-simple:latest" # Simple version 
+          image: "bentopdf/bentopdf:latest" # 
+          env: []
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "100m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          volumeMounts: []
+          securityContext:
+            allowPrivilegeEscalation: false
+            # runAsUser: 1000
+            # runAsGroup: 1000
+      volumes: []

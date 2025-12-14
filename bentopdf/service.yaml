@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bentopdf-svc
+  namespace: homelab
+  labels:
+    name: bentopdf-svc
+  annotations:
+    name: bentopdf-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: bentopdf

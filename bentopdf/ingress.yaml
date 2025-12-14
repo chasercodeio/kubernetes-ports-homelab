@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bentopdf-ing
+  namespace: homelab
+  labels:
+    name: bentopdf
+spec:
+  rules:
+    # - host: "localhost" 
+    - http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: bentopdf-svc
+                port:
+                  number: 8080
