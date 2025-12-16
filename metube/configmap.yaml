@@ -1,0 +1,37 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: metube-configmap
+  namespace: homelab 
+data:
+  DOWNLOAD_MODE: "concurrent"
+  MAX_CONCURRENT_DOWNLOADS: "5"
+  DELETE_FILE_ON_TRASHCAN: "true"
+  DEFAULT_OPTION_PLAYLIST_STRICT_MODE: "false"
+  DEFAULT_OPTION_PLAYLIST_ITEM_LIMIT: "0"
+  DOWNLOAD_DIR: "/downloads"
+  AUDIO_DOWNLOAD_DIR: "/downloads"
+  CUSTOM_DIRS: "true"
+  CUSTOM_DIRS_EXCLUDE_REGEX: "(^|/)[.@].*$"
+  DOWNLOAD_DIRS_INDEXABLE: "false"
+  STATE_DIR: "/downloads/.metube"
+  TEMP_DIR: "/downloads"
+  OUTPUT_TEMPLATE: "%(title)s.%(ext)s"
+  OUTPUT_TEMPLATE_CHAPTER: "%(title)s - %(section_number)s %(section_title)s.%(ext)s"
+  OUTPUT_TEMPLATE_PLAYLIST: "%(playlist_title)s/%(title)s.%(ext)s"
+  # For extra YTDL options: 
+  # - https://github.com/yt-dlp/yt-dlp/blob/master/yt_dlp/YoutubeDL.py#L222
+  # - https://github.com/yt-dlp/yt-dlp/blob/master/devscripts/cli_to_api.py
+  # YTDL_OPTIONS: ""
+  # For reverse proxy (helpful for ingress)
+  URL_PREFIX: "/"
+  HTTPS: "false"
+  UID: "1000"
+  GID: "1000"
+  UMASK: "022"
+  DEFAULT_THEME: "dark"
+  LOGLEVEL: "debug"
+  ENABLE_ACCESSLOG: "false"
+---
+

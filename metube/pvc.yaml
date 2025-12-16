@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: metube-local-downloads-pvc
+  namespace: homelab
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: metube-local-storage
+  volumeName: metube-local-config-pv
+  resources:
+    requests:
+      storage: 2Gi
