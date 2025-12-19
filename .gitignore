@@ -9,3 +9,4 @@ grafanaLabs/mimir/
 grafanaLabs/prometheus/
 pre-config/cilium_nw/defaults/
 templates/
+compose.yaml
