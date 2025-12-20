@@ -1,0 +1,71 @@
+services:
+    # This is the web ui 
+    cobalt-web:
+        container_name: cobalt-web
+        build:
+          dockerfile: Dockerfile
+          args:
+            WEB_HOST: "http://localhost:3000/"
+            WEB_DEFAULT_API: "http://localhost:9000/"
+        ports:
+          - 3000:3000/tcp
+
+    # This is the actual processing instance
+    cobalt:
+        image: ghcr.io/imputnet/cobalt:11
+        init: true
+        read_only: true
+        restart: unless-stopped
+        container_name: cobalt
+        ports:
+            - 9000:9000/tcp
+            # if you use a reverse proxy (such as nginx),
+            # uncomment the next line and remove the one above (9000:9000/tcp):
+            # - 127.0.0.1:9000:9000
+
+        environment:
+            # replace https://api.url.example/ with your instance's url
+            # or else tunneling functionality won't work properly
+            # API_URL: "https://api.url.example/"
+            API_URL: "http://localhost:9000"
+            API_PORT: "9000"
+            DISABLED_SERVICES: "bilibili,youtube"
+            FORCE_LOCAL_PROCESSING: "always"
+            API_LISTEN_ADDRESS: "0.0.0.0"
+            PROCESSING_PRIORITY: "10"
+            API_AUTH_REQUIRED: "0"
+            NO_PROXY: "localhost"
+
+            # if you want to use cookies for fetching data from services,
+            # uncomment the next line & volumes section
+            # COOKIE_PATH: "/cookies.json"
+
+            # it's recommended to configure bot protection or api keys if the instance is public,
+            # see /docs/protect-an-instance.md for more info
+
+            # see /docs/run-an-instance.md for more variables that you can use here
+
+        # labels:
+        #     - com.centurylinklabs.watchtower.scope=cobalt
+
+        # uncomment only if you use the COOKIE_PATH variable
+        # volumes:
+            # - ./cookies.json:/cookies.json
+
+    # watchtower updates the cobalt image automatically
+    # watchtower:
+    #     image: ghcr.io/containrrr/watchtower
+    #     restart: unless-stopped
+    #     command: --cleanup --scope cobalt --interval 900 --include-restarting
+    #     volumes:
+    #         - /var/run/docker.sock:/var/run/docker.sock
+
+    # if needed, use this image for automatically generating poToken & visitor_data
+    # yt-session-generator:
+    #     image: ghcr.io/imputnet/yt-session-generator:webserver
+
+    #     init: true
+    #     restart: unless-stopped
+    #     container_name: yt-session-generator
+    #     labels:
+    #       - com.centurylinklabs.watchtower.scope=cobalt
