@@ -1,0 +1,32 @@
+FROM node:24-alpine AS base
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+
+# Required envs for running the webserver
+ARG WEB_HOST="http://localhost:3000/"
+ARG WEB_DEFAULT_API="http://localhost:9000/"
+
+FROM base AS build
+WORKDIR /cobalt
+
+RUN corepack enable
+RUN apk add --no-cache git
+
+# Making life simple by just cloning it before extracting the build
+RUN git clone https://github.com/imputnet/cobalt.git /cobalt
+
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --filter=./web
+
+RUN pnpm deploy --filter=@imput/cobalt-web ./build
+RUN cd ./build && pnpm run build
+
+FROM base AS web
+RUN npm install -g npm@11.7.0 # not sure if this is working
+RUN npm install -g serve@14.2.5
+WORKDIR /app
+COPY --from=build --chown=node:node /cobalt/build/build /app
+
+USER node
+EXPOSE 3000
+CMD [ "npx", "serve", "./" ]

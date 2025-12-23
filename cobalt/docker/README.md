@@ -17,8 +17,6 @@ docker compose up -d
 Read the docs for more options + environment variables. Might be interesting to add Watchtower
 
 ### UI (just for getting the UI working locally. I now have a dockerfile for building it with the compose)
-The UI is seperate from the processing instance and requires the full repo (i think). This is how i got it to work
-
 ```bash
 # git clone from the source
 git clone https://github.com/imputnet/cobalt/tree/main

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cobalt-instance
+  namespace: homelab
+  labels:
+    name: cobalt-instance
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: cobalt-instance
+  template:
+    metadata:
+      labels:
+        name: cobalt-instance
+        egress: all
+        ingress: all
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: cobalt-instance # https://github.com/imputnet/cobalt/tree/main
+          image: "ghcr.io/imputnet/cobalt:11" # 
+          envFrom:
+            - configMapRef:
+                name: cobalt-instance-configmap
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "1000m"
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 9000
+              protocol: TCP
+          volumeMounts: []
+          securityContext:
+            allowPrivilegeEscalation: false
+            # runAsUser: 1000
+            # runAsGroup: 1000
+      volumes: []

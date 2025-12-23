@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cobalt-ui
+  namespace: homelab
+  labels:
+    name: cobalt-ui
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      name: cobalt-ui
+  template:
+    metadata:
+      labels:
+        name: cobalt-ui
+        egress: lan
+        ingress: lan
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: cobalt-ui # https://github.com/cobalt-ui/cobalt-ui
+          image: "cobalt-ui:latest" # 
+          env: []
+          resources:
+            limits:
+              memory: "1Gi"
+              cpu: "500m"
+          imagePullPolicy: Never
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts: []
+          securityContext:
+            allowPrivilegeEscalation: false
+            # runAsUser: 1000
+            # runAsGroup: 1000
+      volumes: []

@@ -22,7 +22,7 @@ RUN pnpm deploy --filter=@imput/cobalt-web ./build
 RUN cd ./build && pnpm run build
 
 FROM base AS web
-RUN npm install -g npm@11.7.0
+RUN npm install -g npm@11.7.0 # not sure if this is working
 RUN npm install -g serve@14.2.5
 WORKDIR /app
 COPY --from=build --chown=node:node /cobalt/build/build /app

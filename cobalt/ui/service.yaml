@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cobalt-ui-svc
+  namespace: homelab
+  labels:
+    name: cobalt-ui-svc
+  annotations:
+    name: cobalt-ui-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3000
+      name: http
+      targetPort: http
+      protocol: TCP
+      # nodePort: 30000
+  selector:
+    name: cobalt-ui

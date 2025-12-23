@@ -1,0 +1,31 @@
+# https://kubernetes.io/docs/concepts/configuration/configmap/
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cobalt-instance-configmap
+  namespace: homelab
+data:
+  # replace https://api.url.example/ with your instance's url
+  # or else tunneling functionality won't work properly
+  # API_URL: "https://api.url.example/"
+  API_URL: "http://localhost:9000"
+  API_PORT: "9000"
+  DISABLED_SERVICES: "bilibili,youtube"
+  FORCE_LOCAL_PROCESSING: "always"
+  API_LISTEN_ADDRESS: "0.0.0.0"
+  PROCESSING_PRIORITY: "10"
+  API_AUTH_REQUIRED: "0"
+  NO_PROXY: "*"
+  # NO_PROXY: "localhost"
+  # API_CORS_ORIGINS: "*"
+
+  # if you want to use cookies for fetching data from services,
+  # uncomment the next line & volumes section
+  # COOKIE_PATH: "/cookies.json"
+
+  # it's recommended to configure bot protection or api keys if the instance is public,
+  # see /docs/protect-an-instance.md for more info
+
+  # see /docs/run-an-instance.md for more variables that you can use here
+---
+
